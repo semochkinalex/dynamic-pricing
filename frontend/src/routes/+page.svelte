@@ -84,7 +84,7 @@
 	.current {
 		position: absolute;
 		height: 20px;
-		border-radius: 6px;
+		border-radius: 6px 0 0 6px;
 		z-index: 2;
 		background-color: rgb(250, 176, 5);
 	}
@@ -93,7 +93,7 @@
 		position: absolute;
 		z-index: 2;
 		height: 20px;
-		border-radius: 6px;
+		border-radius: 6px 0 0 6px;
 		background-color: rgb(253, 126, 20);
 	}
 
