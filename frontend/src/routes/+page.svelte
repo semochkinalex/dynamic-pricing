@@ -9,13 +9,23 @@
 
 	let currentPrice = 1200;
 
-	const width = tweened((currentPrice - minPrice) / (maxPrice - minPrice) * 100, {
+	const currentPriceWidth = tweened((currentPrice - minPrice) / (maxPrice - minPrice) * 100, {
+		duration: 400,
+		easing: cubicOut
+	});
+
+	
+	const askingPriceWidth = tweened((amount - minPrice) / (maxPrice - minPrice) * 100, {
 		duration: 400,
 		easing: cubicOut
 	});
 
 	$: {
-		width.set((currentPrice - minPrice) / (maxPrice - minPrice) * 100);
+		askingPriceWidth.set(amount < minPrice ? 0 : amount > maxPrice ? 100 : (amount - minPrice) / (maxPrice - minPrice) * 100);
+	}
+
+	$: {
+		currentPriceWidth.set((currentPrice - minPrice) / (maxPrice - minPrice) * 100);
 	}
 
 </script>
@@ -36,7 +46,10 @@
 				<p class="benchmark">{maxPrice} ₽</p>
 			</div>
 
-			<div class="outer"><div class="inner" style:width={`${$width}%`}></div></div>
+			<div class="outer">
+				<div class:higher={amount < currentPrice} class="asking" style:width={`${$askingPriceWidth}%`}></div>
+				<div class="current" style:width={`${$currentPriceWidth}%`}></div>
+			</div>
 			<div class="benchmarks">
 				<p class="benchmark">min. price</p>
 				<p class="benchmark">max. price</p>
@@ -54,15 +67,29 @@
 
 	.outer {
 		height: 15px;
+		position: relative;
 		border-radius: 4px;
 		background-color: #D9D9D9;
 	}
 
-	.inner {
-		/* width: 20%; */
+	.current {
+		position: absolute;
 		height: 15px;
 		border-radius: 4px;
+		z-index: 2;
 		background-color: #808080;
+	}
+
+	.asking {
+		position: absolute;
+		z-index: 2;
+		height: 15px;
+		border-radius: 4px;
+		background-color: red;
+	}
+
+	.higher {
+		z-index: 3;
 	}
 
 	.main {
